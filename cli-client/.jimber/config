@@ -1,0 +1,6 @@
+[project]
+name = jimber
+url  = localhost:8080
+
+[git]
+url = https://github.com/Mahmoud-Emad/jimber.git
