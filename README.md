@@ -41,7 +41,7 @@ Jimber allows users to create and manage their own environment variables as well
 
 ### CLI Tool
 
-1. Install the CLI tool by running `go get github.com/Mahmoud-Emad/jimber/cli`.
+1. Install the CLI tool by running `go get github.com/your-username/jimber/cli`.
 2. Authenticate with the server using the CLI tool (`jimber login`) and follow the prompts.
 3. Use the CLI tool commands to manage environment variables (`jimber add`, `jimber get`, etc.).
 
