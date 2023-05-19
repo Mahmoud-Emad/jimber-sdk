@@ -5,7 +5,7 @@ import (
 	"os"
 
 	utils "github.com/Mahmoud-Emad/jimber/cli/core/utils"
-	"github.com/go-ini/ini"
+	ini "github.com/go-ini/ini"
 )
 
 // Initialize the project
@@ -16,6 +16,7 @@ func Init(projectName string) (string, error) {
 		defaultProjectName, err := utils.GetGitProjectName()
 		if err != nil {
 			fmt.Printf("Failed to get Git project name: %v\n", err)
+
 			return "Failed to get Git project name: %v\n", err
 		}
 		projectName = utils.PromptGitProjectName(defaultProjectName)
