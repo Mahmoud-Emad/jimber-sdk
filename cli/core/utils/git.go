@@ -52,3 +52,13 @@ func GetGitRepoURL() (string, error) {
 	repoURL := strings.TrimSpace(string(output))
 	return repoURL, nil
 }
+
+// Func to check if there is a git repo inside the project
+func IsGitRepo() bool {
+	cmd := exec.Command("git", "rev-parse", "--is-inside-work-tree")
+	_, err := cmd.Output()
+	if err != nil {
+		return false
+	}
+	return true
+}

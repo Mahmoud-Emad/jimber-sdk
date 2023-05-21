@@ -3,6 +3,7 @@ package cli
 import (
 	"log"
 
+	utils "github.com/Mahmoud-Emad/jimber/cli/core/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -11,13 +12,14 @@ type JimberCommands struct {
 }
 
 func InitCommands() JimberCommands {
+	logger := utils.NewLogger()
 	rootCmd := &cobra.Command{
 		Use:   "jimber",
 		Short: "Jimber CLI tool",
 	}
 
-	initCmd := JimberInit()
-	connectCmd := JimberConnect()
+	initCmd := JimberInit(logger)
+	connectCmd := JimberConnect(logger)
 	rootCmd.AddCommand(connectCmd)
 	rootCmd.AddCommand(initCmd)
 

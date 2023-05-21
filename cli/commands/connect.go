@@ -5,17 +5,18 @@ import (
 	"log"
 
 	cli "github.com/Mahmoud-Emad/jimber/cli/core"
-	"github.com/spf13/cobra"
+	utils "github.com/Mahmoud-Emad/jimber/cli/core/utils"
+	cobra "github.com/spf13/cobra"
 )
 
-func JimberConnect() *cobra.Command {
+func JimberConnect(logger utils.Logger) *cobra.Command {
 	var username, password string
 
 	connectCmd := &cobra.Command{
 		Use:   "connect",
 		Short: "Connect to the server",
 		Run: func(cmd *cobra.Command, args []string) {
-			token, err := cli.Connect(username, password)
+			token, err := cli.Connect(logger, username, password)
 			if err != nil {
 				log.Fatal("Login failed:", err)
 			}

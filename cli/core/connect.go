@@ -6,10 +6,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	utils "github.com/Mahmoud-Emad/jimber/cli/core/utils"
 )
 
 // Connect to jimber server
-func Connect(username string, password string) (string, error) {
+func Connect(logger utils.Logger, username string, password string) (string, error) {
 	log.Println("Connecting to the server")
 	postBody, err := json.Marshal(map[string]string{
 		"username": username,
@@ -23,9 +25,11 @@ func Connect(username string, password string) (string, error) {
 	log.Println("Request body:", responseBody.String())
 
 	response, err := http.Post("http://localhost:8080/login", "application/json", responseBody)
+
 	if err != nil {
 		return "", err
 	}
+
 	defer response.Body.Close()
 
 	if response.StatusCode != http.StatusOK {
