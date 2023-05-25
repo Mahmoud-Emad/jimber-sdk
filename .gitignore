@@ -22,4 +22,5 @@ go.work
 .vscode
 
 cli-client/.jimber/config
-cli-client/jimber
+cli-client/.jimber/*
+cli-client/.jimber

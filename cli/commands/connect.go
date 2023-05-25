@@ -16,17 +16,19 @@ func JimberConnect(logger utils.Logger) *cobra.Command {
 		Use:   "connect",
 		Short: "Connect to the server",
 		Run: func(cmd *cobra.Command, args []string) {
-			token, err := cli.Connect(logger, username, password)
-			if err != nil {
-				log.Fatal("Login failed:", err)
+			if utils.IsProjectInitialized(logger) {
+				utils.PromptConnect(logger)
+				token, err := cli.Connect(logger, username, password)
+				if err != nil {
+					log.Fatal("Login failed:", err)
+				}
+				fmt.Println("Authentication token:", token)
 			}
-			fmt.Println("Authentication token:", token)
 		},
 	}
 
 	connectCmd.Flags().StringVarP(&username, "username", "u", "", "Username")
 	connectCmd.Flags().StringVarP(&password, "password", "p", "", "Password")
-	connectCmd.MarkFlagRequired("username")
-	connectCmd.MarkFlagRequired("password")
+
 	return connectCmd
 }

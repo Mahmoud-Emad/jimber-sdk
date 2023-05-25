@@ -32,7 +32,7 @@ func (log *Logger) Set(text string, status int, color string, isError bool) *Log
 
 // In case there is an error use this method to log the text as error message in red color.
 func (log *Logger) Error(text string) *Logger {
-	log.Text = "|-| - " + text
+	log.Text = "|-| " + text
 	log.Status = 0
 	log.Color = "red"
 	log.IsError = true

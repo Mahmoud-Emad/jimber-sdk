@@ -1,6 +1,0 @@
-[project]
-name = jimber
-url  = localhost:8080
-
-[git]
-remote = https://github.com/Mahmoud-Emad/jimber.git

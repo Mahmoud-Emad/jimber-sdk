@@ -64,3 +64,27 @@ func (psr IniParser) Save() *ini.File {
 	}
 	return psr.Config
 }
+
+func IsProjectInitialized(logger Logger) bool {
+	config := LoadConfigFile(".jimber/config")
+	_, err := config.Config.GetSection("project")
+
+	if err != nil {
+		config.IsError = true
+		config.ErrorMessage = fmt.Errorf(`
+
+There is no .jimber project initialized, you can initialize a new one by executing 'jimber init' inside the repository.
+it recommended initializing a new project after creating a new '.git' repository, the 'jimber config' file has the section to the '.git' that includes
+
+- remote URL  
+- repo name
+
+you can see the other values at .jimber/config
+`)
+		// config.ErrorMessage = fmt.Errorf("There is no config file ")
+		logger.Error(config.ErrorMessage.Error())
+		return false
+	} else {
+		return true
+	}
+}
