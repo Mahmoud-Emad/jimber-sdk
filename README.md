@@ -18,9 +18,9 @@ Jimber allows users to create and manage their own environment variables as well
 ## Technologies Used
 
 - Golang: Backend server and CLI tool development.
-- [Your chosen web framework]: Web-based UI development.
+<!-- - [Your chosen web framework]: Web-based UI development.
 - [Your chosen database]: Data storage and management.
-- [Other libraries or dependencies you use]: [List any additional libraries or dependencies used in the project.]
+- [Other libraries or dependencies you use]: [List any additional libraries or dependencies used in the project.] -->
 
 ## Installation and Usage
 
