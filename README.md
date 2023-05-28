@@ -27,23 +27,30 @@ Jimber allows users to create and manage their own environment variables as well
 ### Server Setup
 
 1. Clone the Jimber repository.
-2. Install the necessary dependencies using `go mod download`.
+2. Install the necessary dependencies using `go get`.
 3. Configure the database connection settings in the server configuration file.
 4. Build and run the server using `go run server.go`.
 
-### Web-based UI
+<!-- ### Web-based UI
 
 1. Install the required dependencies for the web-based UI (e.g., Node.js, npm or yarn).
 2. Navigate to the `web-ui` directory.
 3. Install the necessary packages using `npm install` or `yarn install`.
 4. Configure the API endpoint in the web UI codebase.
-5. Start the web-based UI development server using `npm start` or `yarn start`.
+5. Start the web-based UI development server using `npm start` or `yarn start`. -->
 
 ### CLI Tool
 
 1. Install the CLI tool by running `go get github.com/Mahmoud-Emad/jimber/cli`.
-2. Authenticate with the server using the CLI tool (`jimber login`) and follow the prompts.
-3. Use the CLI tool commands to manage environment variables (`jimber add`, `jimber get`, etc.).
+2. Create a new jimber project by executing `jimber init`
+3. Authenticate with the server using the CLI tool (`jimber connect`) and follow the prompts.
+The other commands still in development
+- pull | pull the changes did by team
+- push | push the changes you did
+- add | add the changes to the head
+- set | set new env var
+
+<!-- 3. Use the CLI tool commands to manage environment variables (`jimber add`, `jimber get`, etc.). -->
 
 ## Contributing
 
