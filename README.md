@@ -44,11 +44,12 @@ Jimber allows users to create and manage their own environment variables as well
 1. Install the CLI tool by running `go get github.com/Mahmoud-Emad/jimber/cli`.
 2. Create a new jimber project by executing `jimber init`
 3. Authenticate with the server using the CLI tool (`jimber connect`) and follow the prompts.
-The other commands still in development
-- pull | pull the changes did by team
-- push | push the changes you did
-- add | add the changes to the head
-- set | set new env var
+
+### Commands under implementation
+- pull `pull the changes did by team`
+- push `push the changes you did`
+- add   `add the changes to the head`
+- set   `set new env var`
 
 <!-- 3. Use the CLI tool commands to manage environment variables (`jimber add`, `jimber get`, etc.). -->
 
