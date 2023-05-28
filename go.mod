@@ -6,6 +6,7 @@ require (
 	github.com/fatih/color v1.15.0
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-ini/ini v1.67.0
+	github.com/lib/pq v1.10.9
 	github.com/spf13/cobra v1.7.0
 	golang.org/x/crypto v0.9.0
 )

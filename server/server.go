@@ -1,72 +1,43 @@
 package server
 
 import (
+	"fmt"
 	"log"
-	"net/http"
 
-	"github.com/gin-gonic/gin"
+	database "github.com/Mahmoud-Emad/jimber/database"
 )
 
-func Serve() {
-	r := gin.Default()
+// Server represents the application server.
+type Server struct {
+	Storage database.Storage // Storage is the database storage for the server.
+	Port    string           // Port is the server port number.
+	Host    string           // Host is the server host.
+}
 
-	// Define the routes and handlers
-	r.POST("/login", handleLogin)
-	r.GET("/env/:id", handleGetEnvironmentVariable)
-	r.POST("/env", handleCreateEnvironmentVariable)
-	r.PUT("/env/:id", handleUpdateEnvironmentVariable)
-	r.DELETE("/env/:id", handleDeleteEnvironmentVariable)
-
-	// Run the server on port 8080
-	if err := r.Run(":8080"); err != nil {
-		log.Fatal("Failed to start the server: ", err)
+// Serve starts the server.
+func (srv *Server) Serve() {
+	srv.Storage = database.Storage{
+		DB: nil,
 	}
 
-	log.Fatal("Running server on 8080")
-}
+	fmt.Println("|+| Connecting to the database.")
+	srv.Storage.Connect()
 
-func handleLogin(c *gin.Context) {
-	// Parse and validate the request body for the user's login credentials
-	var loginRequest struct {
-		Username string `json:"username" binding:"required"`
-		Password string `json:"password" binding:"required"`
+	// Check if tables have been migrated
+	migrated, err := srv.Storage.AreTablesMigrated()
+	if err != nil {
+		log.Fatalf("Failed to check if tables are migrated: %v", err)
 	}
 
-	if err := c.ShouldBindJSON(&loginRequest); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
-		return
+	if !migrated {
+		fmt.Println("|+| Migrating the database.")
+		srv.Storage.Migrate()
 	}
 
-	// Authenticate the user (dummy logic for demonstration)
-	// In a real-world scenario, you would verify the credentials against your user database or authentication service
-	if loginRequest.Username == "admin" && loginRequest.Password == "password" {
-		// Generate and return an authentication token
-		// In this example, we're simply returning a success message with a token for demonstration purposes
-		token := "your-token"
-		c.JSON(http.StatusOK, gin.H{"token": token})
-		return
-	}
-
-	// Return an error response if authentication fails
-	c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+	srv.Start()
 }
 
-func handleGetEnvironmentVariable(c *gin.Context) {
-	// Handle retrieving an environment variable
-	// ...
-}
-
-func handleCreateEnvironmentVariable(c *gin.Context) {
-	// Handle creating a new environment variable
-	// ...
-}
-
-func handleUpdateEnvironmentVariable(c *gin.Context) {
-	// Handle updating an existing environment variable
-	// ...
-}
-
-func handleDeleteEnvironmentVariable(c *gin.Context) {
-	// Handle deleting an environment variable
-	// ...
+// Start starts the server.
+func (srv Server) Start() {
+	fmt.Println("|+| Starting the server.")
 }

@@ -5,5 +5,9 @@ import (
 )
 
 func main() {
+	server := server.Server{
+		Port: "8080",
+		Host: "localhost",
+	}
 	server.Serve()
 }
