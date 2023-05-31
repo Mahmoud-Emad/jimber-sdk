@@ -2,42 +2,33 @@ package server
 
 import (
 	"fmt"
-	"log"
 
-	database "github.com/Mahmoud-Emad/jimber/database"
+	logger "jimber.com/sdk/cmd/logger"
+	server "jimber.com/sdk/server/api/projects"
 )
 
-// Server represents the application server.
-type Server struct {
-	Storage database.Storage // Storage is the database storage for the server.
-	Port    string           // Port is the server port number.
-	Host    string           // Host is the server host.
+func NewJimberServer(host string, port string) *JimberServer {
+	s := JimberServer{}
+	s.Host = host
+	s.Port = port
+	s.Api = NewAPIRequest()
+	s.logger = logger.NewLogger()
+	return &s
 }
 
-// Serve starts the server.
-func (srv *Server) Serve() {
-	srv.Storage = database.Storage{
-		DB: nil,
+func NewAPIRequest() *APIRequest {
+	return &APIRequest{
+		Projects: server.NewProjects(),
 	}
+}
 
-	fmt.Println("|+| Connecting to the database.")
-	srv.Storage.Connect()
+// Start the server
+func (s *JimberServer) Start() {
+	// Create the router
 
-	// Check if tables have been migrated
-	migrated, err := srv.Storage.AreTablesMigrated()
+	addr := fmt.Sprintf("%s:%s", s.Host, s.Port)
+	err := s.Router.Run(addr)
 	if err != nil {
-		log.Fatalf("Failed to check if tables are migrated: %v", err)
+		s.logger.Error("Failed to start the server: ", err)
 	}
-
-	if !migrated {
-		fmt.Println("|+| Migrating the database.")
-		srv.Storage.Migrate()
-	}
-
-	srv.Start()
-}
-
-// Start starts the server.
-func (srv Server) Start() {
-	fmt.Println("|+| Starting the server.")
 }

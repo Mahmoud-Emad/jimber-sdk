@@ -1,54 +1,88 @@
-# Jimber
+# Jimber SDK
 
-Jimber is a web-based and CLI tool for managing environment variables for users and teams.
-
-## Overview
-
-Jimber allows users to create and manage their own environment variables as well as share variables within their teams. It provides a server backend deployed online and a simple web-based user interface for managing variables. Additionally, it offers a command-line interface (CLI) tool that can be installed via `go get` to interact with the server and manage variables.
+The Jimber SDK is a comprehensive software development kit that enables seamless interaction with the Jimber system. It provides functionalities for managing environment variables, setting development and production modes, and handling various configurations using a command-line interface (CLI) and server API endpoints. The SDK offers modular components for enhanced code organization and ease of use.
 
 ## Features
 
-- User Authentication: Users can register, log in, and manage their accounts.
-- Role-based Permissions: Users have different roles and permissions, allowing for fine-grained access control.
-- Environment Variable Management: Users can create, update, delete, and retrieve their own environment variables.
-- Team Collaboration: Users can share variables within teams and manage team-specific settings.
-- Web-based UI: A user-friendly web-based interface for interacting with the server and managing variables.
-- CLI Tool: A command-line interface (CLI) tool for accessing and managing variables from the command line.
+- **CLI Client**: Interact with the Jimber CLI using commands such as `init`, `connect`, `add`, `push`, and `pull`. The CLI client generates the `jimber` binary for easy command execution.
 
-## Technologies Used
+- **Client Module**: Initialize the CLI module within the Jimber struct for seamless integration with the CLI client.
 
-- Golang: Backend server and CLI tool development.
-- [Your chosen web framework]: Web-based UI development.
-- [Your chosen database]: Data storage and management.
-- [Other libraries or dependencies you use]: [List any additional libraries or dependencies used in the project.]
+- **CMD Module**: Includes the CLI module and a logger module for error logging, success logging, and stage tracking, allowing users to track their journey within the Jimber system.
 
-## Installation and Usage
+- **Server Module**: Core module responsible for running the HTTP server. It provides API endpoints for storing flags, managing variables, and handling project configurations. The server module includes sub-modules for each database table (e.g., Projects, Users), along with a URL file for registering API endpoints.
 
-### Server Setup
+- **Database Module**: Handles database operations within the Jimber system. It includes a Storage struct with an instance of `gorm.DB` and implements all necessary `gorm.DB` methods.
 
-1. Clone the Jimber repository.
-2. Install the necessary dependencies using `go mod download`.
-3. Configure the database connection settings in the server configuration file.
-4. Build and run the server using `go run server.go`.
+- **Testing Module**: Provides a testing framework for writing unit tests for the server endpoints. Ensures comprehensive test coverage for the Jimber system.
 
-### Web-based UI
+## Installation
 
-1. Install the required dependencies for the web-based UI (e.g., Node.js, npm or yarn).
-2. Navigate to the `web-ui` directory.
-3. Install the necessary packages using `npm install` or `yarn install`.
-4. Configure the API endpoint in the web UI codebase.
-5. Start the web-based UI development server using `npm start` or `yarn start`.
+To use the Jimber SDK, follow these steps:
 
-### CLI Tool
+1. Clone the Jimber SDK repository:
 
-1. Install the CLI tool by running `go get github.com/Mahmoud-Emad/jimber/cli`.
-2. Authenticate with the server using the CLI tool (`jimber login`) and follow the prompts.
-3. Use the CLI tool commands to manage environment variables (`jimber add`, `jimber get`, etc.).
+```bash
+   git clone https://github.com/Mahmoud-Emad/jimber-sdk.git
+```
 
-## Contributing
+2. Install the necessary dependencies:
 
-Contributions are welcome! If you'd like to contribute to Jimber, please follow the guidelines outlined in [CONTRIBUTING.md](CONTRIBUTING.md).
+```bash
+go mod tidy
+```
+
+3. Build the Jimber binary:
+
+```bash
+go build -o jimber cmd/cli-client/main.go
+```
+
+## Usage
+
+1. Run the Jimber Server:
+for name the serving helper implemnted inside the `testing` folder, will move it inside a folder called scripts.
+
+```bash
+go run testing/main.go
+```
+
+2. Run the Jimber CLI client:
+
+```bash
+./jimber <command> [flags]
+```
+
+Available commands:
+
+- init: Initialize a new Jimber project.
+- connect: Connect to an existing Jimber project.
+- add: Add flags or variables to the Jimber project.
+- push: Push the changes to the Jimber server.
+- pull: Pull the latest changes from the Jimber server.
+
+3. Access the Jimber server API endpoints:
+
+```go
+package main
+// Import the required packages
+import (
+    jimberSDK "jimber.com/sdk"
+)
+
+func main() {
+  jimber := jimberSDK.NewJimber("localhost", "8080")
+  jimber.RunServer()
+}
+
+```
+
+The server API endpoints are now accessible at http://localhost:8080.
+
+## Contributions
+
+to the Jimber SDK are welcome! If you find any issues or have suggestions for improvements, please submit a pull request or open an issue in the GitHub repository
 
 ## License
 
-[MIT License](LICENSE)
+The Jimber SDK is released under the MIT License
