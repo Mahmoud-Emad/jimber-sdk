@@ -3,7 +3,7 @@ package server
 import user "jimber.com/sdk/server/api/users"
 
 // / Project represents a project in the database.
-type Projects struct {
+type Project struct {
 	ID          int         `json:"id"`                                 // ID is the unique identifier of the project.
 	Name        string      `json:"name"`                               // Name is the name of the project.
 	Token       string      `json:"token"`                              // Token is the token associated with the project.

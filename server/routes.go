@@ -1,13 +1,12 @@
 package server
 
-// registerAPIRoutes registers the API endpoints.
-func (srv *JimberServer) registerAPIRoutes() {
-	// api := srv.Router.Group("/api")
-	// srv.projectRoutes(api)
-}
+import (
+	"github.com/gin-gonic/gin"
+)
 
-// Register all project endpoints
-// func (srv *JimberServer) projectRoutes(api *gin.RouterGroup) {
-// 	api.GET("/projects", srv.getProjectsHandler)
-// 	api.POST("/projects", srv.createProjectHandler)
-// }
+// Register Project routes inside the jim server
+func (s *JimberServer) RegisterAPIRoutes() {
+	s.Router = gin.Default()
+	api := s.Router.Group("api") // => api/
+	s.Api.Projects.RegisterRoutes(s.Storage.DB, api)
+}

@@ -8,7 +8,7 @@ import (
 )
 
 type APIRequest struct {
-	Projects *projects.Projects
+	Projects *projects.Project
 }
 
 type JimberServer struct {
