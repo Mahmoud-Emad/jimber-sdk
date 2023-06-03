@@ -9,4 +9,5 @@ func (s *JimberServer) RegisterAPIRoutes() {
 	s.Router = gin.Default()
 	api := s.Router.Group("api") // => api/
 	s.Api.Projects.RegisterRoutes(s.Storage.DB, api)
+	s.Api.Users.RegisterRoutes(s.Storage.DB, api)
 }

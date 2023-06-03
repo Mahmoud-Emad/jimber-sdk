@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// Get all registered projects from the database
 func (p *Project) GetProjects(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Retrieving projects
@@ -23,6 +24,7 @@ func (p *Project) GetProjects(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
+// Method to create project record into the database.
 func (p *Project) CreateProject(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var project Project
