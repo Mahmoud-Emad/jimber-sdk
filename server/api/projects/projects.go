@@ -8,10 +8,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func (p *Projects) GetProjects(db *gorm.DB) gin.HandlerFunc {
+// Get all registered projects from the database
+func (p *Project) GetProjects(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Retrieving projects
-		var projects []Projects
+		var projects []Project
 		result := db.Find(&projects)
 		if result.Error != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
@@ -23,9 +24,10 @@ func (p *Projects) GetProjects(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func (p *Projects) CreateProject(db *gorm.DB) gin.HandlerFunc {
+// Method to create project record into the database.
+func (p *Project) CreateProject(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var project Projects
+		var project Project
 		if err := c.ShouldBindJSON(&project); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid project data"})
 			return
@@ -44,6 +46,6 @@ func (p *Projects) CreateProject(db *gorm.DB) gin.HandlerFunc {
 }
 
 // Initialize a new projects struct
-func NewProjects() *Projects {
-	return &Projects{}
+func NewProjects() *Project {
+	return &Project{}
 }
