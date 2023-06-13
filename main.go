@@ -1,15 +1,22 @@
+// This file just for testing.
 package main
 
 import (
-	"github.com/Mahmoud-Emad/jimber/server"
+	"sync"
+
+	app "github.com/Mahmoud-Emad/envserver/app"
 )
 
-// Main
-
 func main() {
-	server := server.Server{
-		Port: "8080",
-		Host: "localhost",
-	}
-	server.Serve()
+	server := app.NewServer("0.0.0.0", "8080")
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+
+	go func() {
+		defer wg.Done()
+		if err := server.Serve(); err != nil {
+		}
+	}()
+	wg.Wait()
 }

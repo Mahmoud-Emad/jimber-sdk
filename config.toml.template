@@ -1,0 +1,9 @@
+[database]
+host = "<database_host>"
+port = <database_port>
+user = "<database_user>"
+password = "<database_password>"
+name = "<database_name>"
+
+[server]
+port = <server_port>
