@@ -39,20 +39,24 @@ func TestDatabaseConnect(t *testing.T) {
 }
 
 func TestUser(t *testing.T) {
+	username := "Mahmoud"
+	email := "Mahmoud@gmail.com"
+
 	t.Run("create new user object", func(t *testing.T) {
 		// Test create new user record into the database.
+
 		db, _ := setupDB(t)
 		err := db.CreateUser(&User{
-			Name:     "test",
-			Email:    "test@test.test",
+			Name:     username,
+			Email:    email,
 			Projects: []*Project{},
 		})
 
 		assert.NoError(t, err)
 
-		user, err := db.GetUserByEmail("test@test.test")
+		user, err := db.GetUserByEmail(email)
 
-		assert.Equal(t, user.Name, "test")
+		assert.Equal(t, user.Name, username)
 		assert.NoError(t, err)
 	})
 
@@ -61,33 +65,35 @@ func TestUser(t *testing.T) {
 		db, _ := setupDB(t)
 		var user User
 
-		user, err := db.GetUserByEmail("test@test.test")
+		user, err := db.GetUserByEmail(email)
 
 		assert.NoError(t, err)
-		assert.Equal(t, user.Name, "test")
+		assert.Equal(t, user.Name, username)
 
-		err = db.DeleteUserByEmail("test@test.test")
+		err = db.DeleteUserByEmail(email)
 
 		assert.NoError(t, err)
 
-		user, err = db.GetUserByEmail("test@test.test")
+		user, err = db.GetUserByEmail(email)
 		assert.Error(t, err)
 	})
 }
 
 func TestProject(t *testing.T) {
+	projectName := "ligdude"
+
 	t.Run("create new project object", func(t *testing.T) {
 		// Test create new project record into the database.
 		db, _ := setupDB(t)
 		err := db.CreateProject(&Project{
-			Name: "test",
+			Name: projectName,
 		})
 
 		assert.NoError(t, err)
 
-		p, err := db.GetProjectByName("test")
+		p, err := db.GetProjectByName(projectName)
 
-		assert.Equal(t, p.Name, "test")
+		assert.Equal(t, p.Name, projectName)
 		assert.NoError(t, err)
 	})
 
@@ -95,44 +101,53 @@ func TestProject(t *testing.T) {
 		// Test delete project record from the database by its name.
 		db, _ := setupDB(t)
 
-		p, err := db.GetProjectByName("test")
+		p, err := db.GetProjectByName(projectName)
 
 		assert.NoError(t, err)
-		assert.Equal(t, p.Name, "test")
+		assert.Equal(t, p.Name, projectName)
 
-		err = db.DeleteProjectByName("test")
+		err = db.DeleteProjectByName(projectName)
 
 		assert.NoError(t, err)
 
-		_, err = db.GetProjectByName("test")
+		_, err = db.GetProjectByName(projectName)
 		assert.Error(t, err)
 	})
 }
 
 func TestEnvironmentKey(t *testing.T) {
+	projectName := "ligdude"
+
+	// Config key/value
+	projectKey := "password"
+	projectValue := "xyz@M@#Jois2$#!"
+
 	t.Run("create new environment Key object", func(t *testing.T) {
 		// Test create new env key|value record into the database.
 		db, _ := setupDB(t)
 
 		err := db.CreateProject(&Project{
-			Name: "test",
+			Name: projectName,
 		})
 
 		assert.NoError(t, err)
 
-		p, err := db.GetProjectByName("test")
+		p, err := db.GetProjectByName(projectName)
+
+		// Encrypted value
+		encryptedVal, err := internal.AESEncrypt([]byte(projectValue), projectKey)
+		assert.NoError(t, err)
 
 		err = db.CreateEnvKey(&EnvironmentKey{
-			Key:       "test",
-			Value:     "test",
+			Key:       projectKey,
+			Value:     encryptedVal,
 			ProjectID: p.ID,
 		})
 
 		assert.NoError(t, err)
 
-		env, err := db.GetEnvKeyByKeyName("test")
-
-		assert.Equal(t, env.Key, "test")
+		env, err := db.GetEnvKeyByKeyName(projectKey)
+		assert.Equal(t, env.Key, projectKey)
 		assert.NoError(t, err)
 	})
 
@@ -140,23 +155,34 @@ func TestEnvironmentKey(t *testing.T) {
 		// Test delete key|value record from the database by its key name.
 		db, _ := setupDB(t)
 
-		env, err := db.GetEnvKeyByKeyName("test")
-
-		assert.NoError(t, err)
-		assert.Equal(t, env.Key, "test")
-
-		err = db.DeleteEnvKeyByKeyName("test")
-
+		env, err := db.GetEnvKeyByKeyName(projectKey)
 		assert.NoError(t, err)
 
-		_, err = db.GetEnvKeyByKeyName("test")
+		// Encrypted value
+		encryptedVal, err := internal.AESEncrypt([]byte(projectValue), projectKey)
+		assert.NoError(t, err)
+
+		decodedVal, err := internal.AESDecryptIt(encryptedVal, projectKey)
+		assert.NoError(t, err)
+
+		decodedStoredVal, err := internal.AESDecryptIt(env.Value, projectKey)
+		assert.NoError(t, err)
+
+		assert.Equal(t, decodedVal, decodedStoredVal)
+		assert.Equal(t, string(decodedVal), string(decodedStoredVal))
+
+		err = db.DeleteEnvKeyByKeyName(projectKey)
+
+		assert.NoError(t, err)
+
+		_, err = db.GetEnvKeyByKeyName(projectKey)
 		assert.Error(t, err)
 
-		err = db.DeleteProjectByName("test")
+		err = db.DeleteProjectByName(projectName)
 
 		assert.NoError(t, err)
 
-		_, err = db.GetProjectByName("test")
+		_, err = db.GetProjectByName(projectName)
 		assert.Error(t, err)
 	})
 }

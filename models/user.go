@@ -15,7 +15,7 @@ type User struct {
 	Email          string     `json:"email" gorm:"unique" binding:"required"`
 	HashedPassword []byte     `json:"hashed_password" binding:"required"`
 	UpdatedAt      time.Time  `json:"updated_at"`
-	ISOwner        bool       `json:"is_owner"`
+	IsOwner        bool       `json:"is_owner"`
 	Projects       []*Project `gorm:"many2many:user_projects;"`
 }
 

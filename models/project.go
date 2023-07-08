@@ -24,7 +24,7 @@ type EnvironmentKey struct {
 	ID        uuid.UUID `gorm:"primary_key; unique; type:uuid; column:id"`
 	ProjectID uuid.UUID
 	Key       string `gorm:"unique;"`
-	Value     string
+	Value     []byte
 }
 
 // BeforeCreate generates a new uuid.
