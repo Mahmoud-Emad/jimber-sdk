@@ -1,7 +1,6 @@
 package app
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -26,25 +25,26 @@ func NewServer(host string, port string) *Server {
 // Start the server
 func (s *Server) Serve() error {
 	initZerolog()
-	log.Info().Msgf("Server is listening on %s:%s", s.Host, s.Port)
+	log.Info().Msgf("Server is listening on http://%s:%s", s.Host, s.Port)
 
 	// Define a handler function for the root route ("/")
 	rootHandler := func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Hello, World!")
 	}
 
-	srv := &http.Server{
-		Addr:    fmt.Sprintf("%s:%s", s.Host, s.Port),
-		Handler: http.HandlerFunc(rootHandler),
+	// Define a handler function for the root route ("/hello")
+	helloHandler := func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "Just Hello!")
 	}
 
-	go func() {
-		log.Info().Msg("From here")
-		if err := srv.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
-			log.Fatal().Err(err).Msg("HTTP server error")
-		}
-		log.Info().Msg("Stopped serving new connections")
-	}()
+	http.HandleFunc("/", rootHandler)
+	http.HandleFunc("/hello", helloHandler)
+
+	err := http.ListenAndServe(fmt.Sprintf("%s:%s", s.Host, s.Port), nil)
+
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

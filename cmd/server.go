@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	server := app.NewServer("0.0.0.0", "8080")
+	server := app.NewServer("127.0.0.1", "8080")
 
 	var wg sync.WaitGroup
 	wg.Add(1)
