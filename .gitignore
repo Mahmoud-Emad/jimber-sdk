@@ -21,6 +21,4 @@
 go.work
 .vscode
 config.toml
-cli-client/.jimber/config
-cli-client/.jimber/*
-cli-client/.jimber
+server
