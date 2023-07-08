@@ -21,7 +21,7 @@ envserver provides a command-line interface (CLI) tool to facilitate key managem
 
 For detailed information on configuring the envserver project, refer to the [Project Configuration](./docs/configuration.md) document. This document provides instructions on setting up the config.toml configuration file, which includes important settings such as database connection details and server port.
 
-## MakeFile Commands
+## Makefile Commands
 
 - `build`: This command builds the project by compiling the `cmd/server.go` file.
 - `run`: This command first builds the project by invoking the build command, and then it runs the built executable file `./server`.
