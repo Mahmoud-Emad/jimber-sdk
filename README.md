@@ -21,6 +21,13 @@ envserver provides a command-line interface (CLI) tool to facilitate key managem
 
 For detailed information on configuring the envserver project, refer to the [Project Configuration](./docs/configuration.md) document. This document provides instructions on setting up the config.toml configuration file, which includes important settings such as database connection details and server port.
 
+## MakeFile Commands
+
+- `build`: This command builds the project by compiling the `cmd/server.go` file.
+- `run`: This command first builds the project by invoking the build command, and then it runs the built executable file `./server`.
+- `test`: This command first builds the project by invoking the build command, and then it runs all the tests in the project using the go test command.
+- `clean`: This command will remove the executable file `./server`.
+
 ## Contributing
 
 If you would like to contribute to the envserver project, please refer to the [Contributing Guidelines](./docs/contributing.md) document. It outlines the steps to contribute, including guidelines for reporting issues, suggesting improvements, and submitting pull requests.
