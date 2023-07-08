@@ -34,13 +34,3 @@ func ReadConfFile(path string) (Configuration, error) {
 	}
 	return config, nil
 }
-
-// Parse the config file.
-func ParseConfigFile(path string) error {
-	config, err := ReadConfFile(path)
-	if err != nil {
-		return err
-	}
-	fmt.Println(config)
-	return nil
-}
