@@ -15,7 +15,7 @@ func mdHashing(input string) string {
 	return hex.EncodeToString(md5Hash[:]) // by referring to it as a string
 }
 
-func encryptIt(value []byte, keyPhrase string) ([]byte, error) {
+func AESEncrypt(value []byte, keyPhrase string) ([]byte, error) {
 	aesBlock, err := aes.NewCipher([]byte(mdHashing(keyPhrase)))
 	if err != nil {
 		return []byte{}, err
@@ -34,7 +34,7 @@ func encryptIt(value []byte, keyPhrase string) ([]byte, error) {
 	return cipheredText, nil
 }
 
-func decryptIt(ciphered []byte, keyPhrase string) ([]byte, error) {
+func AESDecryptIt(ciphered []byte, keyPhrase string) ([]byte, error) {
 	hashedPhrase := mdHashing(keyPhrase)
 	aesBlock, err := aes.NewCipher([]byte(hashedPhrase))
 	if err != nil {
