@@ -7,17 +7,49 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var (
+	confContent = `
+[database]
+host = "localhost"
+user = "postgres"
+password = "postgres"
+port = 5432
+name = "postgres"
+[server]
+port = 8080
+host = "localhost"
+`
+)
+
 // Setup database helper, created to be used inside test case functions.
 func setupDB(t *testing.T) (Database, internal.Configuration) {
 	db := NewDatabase()
-	// Read the database config.
-	dbConfig, err := internal.ReadConfFile("../config.toml")
+	config, err := internal.ReadConfigFromString(confContent)
+
+	err = db.Connect(config.Database)
 	assert.NoError(t, err)
-	err = db.Connect(dbConfig.Database)
-	assert.NoError(t, err)
+
 	err = db.Migrate()
 	assert.NoError(t, err)
-	return db, dbConfig
+
+	return db, config
+}
+
+// Create a test configuration for database connection.
+func createTestConfig() internal.Configuration {
+	return internal.Configuration{
+		Database: internal.DatabaseConfiguration{
+			Host:     "localhost",
+			Port:     5432,
+			User:     "postgres",
+			Password: "postgres",
+			Name:     "postgres",
+		},
+		Server: internal.ServerConfiguration{
+			Host: "localhost",
+			Port: 8080,
+		},
+	}
 }
 
 // Test connect to database.

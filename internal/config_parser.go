@@ -1,8 +1,9 @@
-// Package internal for internal details
 package internal
 
 import (
 	"fmt"
+	"io"
+	"strings"
 
 	"github.com/BurntSushi/toml"
 )
@@ -26,11 +27,26 @@ type DatabaseConfiguration struct {
 }
 
 // Read the config file.
-func ReadConfFile(path string) (Configuration, error) {
+func ReadConfigFromFile(path string) (Configuration, error) {
 	config := Configuration{}
 	_, err := toml.DecodeFile(path, &config)
 	if err != nil {
 		return Configuration{}, fmt.Errorf("failed to open config file: %w", err)
+	}
+	return config, nil
+}
+
+// Read the config from a string.
+func ReadConfigFromString(content string) (Configuration, error) {
+	return ReadConfigFromReader(strings.NewReader(content))
+}
+
+// Read the config from a reader.
+func ReadConfigFromReader(r io.Reader) (Configuration, error) {
+	config := Configuration{}
+	_, err := toml.DecodeReader(r, &config)
+	if err != nil {
+		return Configuration{}, fmt.Errorf("failed to decode config from reader: %w", err)
 	}
 	return config, nil
 }
