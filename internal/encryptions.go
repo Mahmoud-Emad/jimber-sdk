@@ -6,9 +6,7 @@ import (
 	"crypto/md5"
 	"crypto/rand"
 	"encoding/hex"
-	"fmt"
 	"io"
-	"log"
 )
 
 func mdHashing(input string) string {
@@ -17,15 +15,15 @@ func mdHashing(input string) string {
 	return hex.EncodeToString(md5Hash[:]) // by referring to it as a string
 }
 
-func encryptIt(value []byte, keyPhrase string) []byte {
+func encryptIt(value []byte, keyPhrase string) ([]byte, error) {
 	aesBlock, err := aes.NewCipher([]byte(mdHashing(keyPhrase)))
 	if err != nil {
-		fmt.Println(err)
+		return []byte{}, err
 	}
 
 	gcmInstance, err := cipher.NewGCM(aesBlock)
 	if err != nil {
-		fmt.Println(err)
+		return []byte{}, err
 	}
 
 	nonce := make([]byte, gcmInstance.NonceSize())
@@ -33,18 +31,18 @@ func encryptIt(value []byte, keyPhrase string) []byte {
 
 	cipheredText := gcmInstance.Seal(nonce, nonce, value, nil)
 
-	return cipheredText
+	return cipheredText, nil
 }
 
-func decryptIt(ciphered []byte, keyPhrase string) []byte {
+func decryptIt(ciphered []byte, keyPhrase string) ([]byte, error) {
 	hashedPhrase := mdHashing(keyPhrase)
 	aesBlock, err := aes.NewCipher([]byte(hashedPhrase))
 	if err != nil {
-		log.Fatalln(err)
+		return []byte{}, err
 	}
 	gcmInstance, err := cipher.NewGCM(aesBlock)
 	if err != nil {
-		log.Fatalln(err)
+		return []byte{}, err
 	}
 
 	nonceSize := gcmInstance.NonceSize()
@@ -52,7 +50,8 @@ func decryptIt(ciphered []byte, keyPhrase string) []byte {
 
 	originalText, err := gcmInstance.Open(nil, nonce, cipheredText, nil)
 	if err != nil {
-		log.Fatalln(err)
+		return []byte{}, err
 	}
-	return originalText
+
+	return originalText, nil
 }
