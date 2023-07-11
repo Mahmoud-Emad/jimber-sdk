@@ -20,7 +20,5 @@
 # Go workspace file
 go.work
 .vscode
-
-cli-client/.jimber/config
-cli-client/.jimber/*
-cli-client/.jimber
+config.toml
+envserver
