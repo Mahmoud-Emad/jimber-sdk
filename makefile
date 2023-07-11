@@ -1,11 +1,11 @@
 build:
-	go build cmd/server.go
+	go build cmd/envserver.go
 
 run: build
-	./server
+	./envserver
 
 test: build
 	go test ./...
 
 clean:
-	rm -rf ./server
+	rm -rf ./envserver
